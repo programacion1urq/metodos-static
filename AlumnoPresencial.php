@@ -1,15 +1,12 @@
 <?php
-class AlumnoPresencial
+require 'Alumno.php';
+class AlumnoPresencial extends Alumno
 {
     const NOTAMINIMA = 4;
     const MINIMOASIST = 75;
-    private $nombre;
-    private $apellido;
-    private $dni;
     private $notas = array();
     private $cantidadInasistencias;
     private static $diasHabiles;
-
 
     public static function setDiasHabiles($d) {
         self::$diasHabiles = $d;
@@ -17,21 +14,9 @@ class AlumnoPresencial
 
     public function __construct($n, $a, $d, $i, Array $notas)
     {
-        $this->nombre = $n;
-        $this->apellido = $a;
-        $this->dni = $d;
+        parent::__construct($n,$a,$d);
         $this->cantidadInasistencias = $i;
         $this->notas = $notas;
-    }
-
-    public function getNombreApellido()
-    {
-        return "$this->nombre $this->apellido";
-    }
-
-    public function getDni()
-    {
-        return $this->dni;
     }
 
     private function porcentajeAsistencia() 
@@ -57,8 +42,6 @@ class AlumnoPresencial
         return $suma / count($this->notas);
     }
 
-
-
     public function getNota()
     {
         if ($this->hayReprobados() || 
@@ -69,12 +52,4 @@ class AlumnoPresencial
             return $this->promedioNotas();
         }
     }
-
-    public function __toString() 
-    {
-        return "$this->nombre $this->apellido. DNI: $this->dni. Nota: " . $this->getNota();
-    }
 }
-
-
-
